@@ -71,15 +71,7 @@ songplay_table_insert = (""" INSERT INTO songplays (start_time, user_id, level, 
                                                     location, user_agent) 
                                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
                            ON CONFLICT (songplay_id) 
-                           DO UPDATE
-                           SET start_time = COALESCE(excluded.start_time,  songplays.start_time),
-                               user_id = COALESCE(excluded.user_id,  songplays.user_id),
-                               level = COALESCE(excluded.level,  songplays.level),
-                               song_id = COALESCE(excluded.song_id,  songplays.song_id),
-                               artist_id = COALESCE(excluded.artist_id,  songplays.artist_id),
-                               session_id = COALESCE(excluded.session_id,  songplays.session_id),
-                               location = COALESCE(excluded.location,  songplays.location),
-                               user_agent = COALESCE(excluded.user_agent,  songplays.user_agent);
+                           DO NOTHING;
                            
 """)
 
@@ -87,44 +79,27 @@ user_table_insert = (""" INSERT INTO users (user_id, first_name, last_name, gend
                                 VALUES (%s, %s, %s, %s, %s)
                          ON CONFLICT (user_id) 
                            DO UPDATE
-                           SET first_name = COALESCE(excluded.first_name,  users.first_name),
-                               last_name = COALESCE(excluded.last_name,  users.last_name),
-                               gender = COALESCE(excluded.gender,  users.gender),
-                               level = COALESCE(excluded.level,  users.level);
+                           SET level = users.level;
                          
 """)
 
 song_table_insert = (""" INSERT INTO songs (song_id, title, artist_id, year, duration) 
                                 VALUES (%s, %s, %s, %s, %s)
                          ON CONFLICT (song_id) 
-                           DO UPDATE
-                           SET title = COALESCE(excluded.title,  songs.title),
-                               artist_id = COALESCE(excluded.artist_id,  songs.artist_id),
-                               year = COALESCE(excluded.year,  songs.year),
-                               duration = COALESCE(excluded.duration,  songs.duration);
+                         DO NOTHING;
 """)
 
 artist_table_insert = (""" INSERT INTO artists (artist_id, name, location, latitude, longitude) 
                                 VALUES (%s, %s, %s, %s, %s)
                             ON CONFLICT (artist_id) 
-                           DO UPDATE
-                           SET name = COALESCE(excluded.name,  artists.name),
-                               location = COALESCE(excluded.location,  artists.location),
-                               latitude = COALESCE(excluded.latitude,  artists.latitude),
-                               longitude = COALESCE(excluded.longitude,  artists.longitude);
+                            DO NOTHING;
 """)
 
 
 time_table_insert = (""" INSERT INTO time (star_time, hour, day, week, month, year, weekday) 
                                 VALUES (%s, %s, %s, %s, %s, %s, %s)
                           ON CONFLICT (star_time) 
-                          DO UPDATE
-                           SET hour = COALESCE(excluded.hour,  time.hour),
-                               day = COALESCE(excluded.day,  time.day),
-                               week = COALESCE(excluded.week,  time.week),
-                               month = COALESCE(excluded.month,  time.month),
-                               year = COALESCE(excluded.year,  time.year),
-                               weekday = COALESCE(excluded.weekday,  time.weekday);
+                          DO NOTHING;
 """)
 
 # FIND SONGS
