@@ -1,7 +1,6 @@
 # Capstone Project Udacity Data Engineering Nanodegree
 
 
-
 ## Purpose
 
 We at the NGO Brasil Saúde (Brazil Health) want to understand if covid-19 vaccination numbers in Brazil has some correlation with Brazil's election results. In order to do that, our data engineering team retrieved data from the electoral court website and stored in a s3 bucket. In addition they also created a data model to make data easier to analyse in our database. 
@@ -32,10 +31,27 @@ The access of the database is managed by the our IAM team. If we need to increas
 Election data was collected from brazil's superior electoral court website (https://dadosabertos.tse.jus.br/dataset). 
 Demographic data was collected from an IBGE dataset on kaggle (https://www.kaggle.com/datasets/crisparada/brazilian-cities?resource=download&select=Data_Dictionary.csv)
 
+# DAGS
+
+We have created 2 dags in this project:
+
+1. election_data_dag:
+
+ - This dag loads from S3 both candidates and votes files and insert its data into the raw_data schema on Redshift
+ - The next step consist in create the dimension and fact tables
+ - And then, to finish, we do some quality checks for each table
+
+2. ibge_data_dag:
+
+ - This dag loads from S3 ibge's population file and insert its data into the raw_data schema on Redshift
+ - The next step consist in create the dimension and fact tables
+ - And then, to finish, we do some quality checks 
+
+As a lot of the steps repeat themselves, we could have coded some operators in a subdag. However, we have chosen to code each operator and task separately due to pipeline management quality
 
 ## Schema design
 
-We've chosen to design our database using the star schema concept. This will help our analysts to query the data in a simpler way. 
+We've chosen to design our database using the star schema concept. This will help our analysts to query the data in a simpler way. A diagram of the table schema can be found in here: https://dbdiagram.io/d/6293e0fcf040f104c1ba0ca4
 
 The ETL process creates 7 tables, being 1 fact table and 6 dimension tables:
 
@@ -123,4 +139,4 @@ The ETL process creates 7 tables, being 1 fact table and 6 dimension tables:
     |  urban_household_amount | integer | city's urban household total number | 
     |  rural_household_amount | integer | city's rural household total number | 
 
-
+    As this is a additional data from a different data source, the link between data will need to be done using the city name column, and the link will be between two dimension tables.
