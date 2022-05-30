@@ -140,3 +140,6 @@ The ETL process creates 7 tables, being 1 fact table and 6 dimension tables:
     |  rural_household_amount | integer | city's rural household total number | 
 
     As this is a additional data from a different data source, the link between data will need to be done using the city name column, and the link will be between two dimension tables.
+    
+    
+** The NGO is fictional and created for this project only
