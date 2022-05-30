@@ -14,7 +14,7 @@ We will now use s3 to store the raw data and Redshift to store the processed dat
 
 This project contains three .py files that need to be executed in order to process the files into the database:
 
-- create_cluster.py (only if the cluster is not already online)
+- create_cluster.py
 - create_tables.py
 - etl.py
 
