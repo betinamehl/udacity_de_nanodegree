@@ -142,4 +142,27 @@ The ETL process creates 7 tables, being 1 fact table and 6 dimension tables:
     As this is a additional data from a different data source, the link between data will need to be done using the city name column, and the link will be between two dimension tables.
     
     
+    #### Query examples:
+    
+    If we want to check the amount of votes per gender, we could do a query like this one, joining the fact table with the dimension where the demographic that we want to analyse is stored.
+    
+        ```
+        select 
+    	       c.gender,
+            count(v.vote_amount),
+		          sum(v.vote_amount) as vote_sum
+	       from fact.votes v
+    	       left join dim.candidate c
+                 on c.cpf_number = v.candidate_id
+        where vote_type = 'candidate'
+            and gender is not null
+        group by 1
+        ```
+        
+   The output of this query is in the image below
+    
+  <img width="805" alt="image" src="https://user-images.githubusercontent.com/66981974/170996720-28c7a773-76d6-4fae-a2ff-ec2eb2370c67.png">
+
+
+    
 ** The NGO is fictional and created for this project only
